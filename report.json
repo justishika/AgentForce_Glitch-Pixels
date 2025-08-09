@@ -1,50 +1,40 @@
 {
-  "summary": "Here is a summary of the key purpose and business terms of the contract in 3-5 bullet points:\n\n• The contract is between Alpha Co and Beta LLC.\n• Payment terms: payment is due within 30 days of invoice.\n• Termination: either party may terminate the agreement with 60 days' written notice.\n• Liability: liability is limited to $10,000.\n• Confidentiality: parties agree to keep shared information confidential, except as required by law.",
-  "clauses": {
-    "Liability": "Liability shall not exceed $10,000.",
-    "Termination": "Either party may terminate this Agreement with 60 days' written notice.",
-    "PaymentTerms": "Payment shall be made within 30 days of invoice.",
-    "Confidentiality": "The parties agree to keep shared information confidential except as required by law."
-  },
+  "summary": [
+    "Here are 3 key points summarizing the legal section:\n\n* Payment terms: Alpha Co and Beta LLC agree that payment shall be made within 30 days of receiving an invoice.\n* Termination and liability: Either party can terminate the agreement with 60 days' written notice, and liability is capped at $10,000.\n* Confidentiality: The parties must keep shared information confidential, unless disclosure is required by law."
+  ],
   "validation": {
     "Liability": {
-      "status": "RISKY",
-      "reason": "Liability limit is too low and does not specify types of damages excluded",
-      "suggested_fix": "Specify a liability limit equal to the contract value or a reasonable cap, and clarify types of damages excluded",
-      "severity": "medium"
+      "status": "COMPLIANT",
+      "reason": "Yes.\n\nThis section addresses the checklist item by limiting liability to a specified cap of $10,000, which meets the requirement of having a specified cap. However, it does not explicitly clarify the types of damages excluded, such as consequential damages. Despite this, the section does provide some limitation on liability, which is the primary requirement of the checklist item. A more comprehensive approach would be to explicitly exclude certain types of damages, but the provided section still partially addresses the checklist item.",
+      "suggested_fix": "",
+      "severity": "low"
     },
     "Termination": {
-      "status": "MISSING",
-      "reason": "Does not allow termination for convenience with notice or for cause",
-      "suggested_fix": "Add clauses allowing termination for convenience with notice or for cause",
-      "severity": "high"
+      "status": "COMPLIANT",
+      "reason": "Yes.\n\nThis section addresses the checklist item because it allows either party to terminate the Agreement with 60 days' written notice, which implies termination for convenience. The notice period is also specified as 60 days, meeting the requirement. Although the section does not explicitly mention termination \"for cause,\" it does provide for termination with notice, which aligns with the checklist item's requirement for termination for convenience with a specified notice period.",
+      "suggested_fix": "",
+      "severity": "low"
     },
-    "PaymentTerms": {
+    "Payment Terms": {
       "status": "MISSING",
-      "reason": "Does not specify payment amounts, due dates, invoicing, and penalties/interest for late payment",
-      "suggested_fix": "Specify payment amounts, due dates, invoicing, and penalties/interest for late payment",
+      "reason": "Clause not found in document.",
+      "suggested_fix": "Add clause: Must specify payment amounts, due dates, invoicing, and penalties/interest for late payment.",
       "severity": "high"
     },
     "Confidentiality": {
-      "status": "RISKY",
-      "reason": "Does not require parties to keep confidential information private and limit permitted disclosures",
-      "suggested_fix": "Require parties to keep confidential information private and limit permitted disclosures",
-      "severity": "medium"
+      "status": "COMPLIANT",
+      "reason": "Yes.\n\nThis section addresses the checklist item because it includes a provision that requires the parties to \"keep shared information confidential except as required by law.\" This language limits the disclosure of confidential information and only permits disclosure when required by law, thus meeting the requirement of keeping confidential information private and limiting permitted disclosures.",
+      "suggested_fix": "",
+      "severity": "low"
     }
   },
-  "followups": {
-    "follow_up_questions": [
-      "Can you specify the types of damages excluded from the liability limit?",
-      "Is there a specific reason for not allowing termination for convenience or for cause?",
-      "Can you provide more details on the payment amounts, due dates, and invoicing process?",
-      "Are there any specific laws or regulations that require disclosure of confidential information?",
-      "Is there a cap on the liability limit, and if so, what is it?"
-    ],
-    "suggested_rewrites": [
-      "Liability shall not exceed [reasonable cap] and shall not include [types of damages excluded].",
-      "Either party may terminate this Agreement with [reasonable notice period] written notice, or for cause upon [specific circumstances].",
-      "Payment shall be made within [reasonable timeframe] of invoice, with [penalties/interest] for late payment."
-    ]
-  },
-  "timestamp": 1754741205.4352422
+  "red_flags": [
+    "**Risky Terms, Missing Clauses, and Red Flags:**",
+    "1. **What are the potential consequences of not having a comprehensive payment terms clause, and how can we mitigate these risks?**"
+  ],
+  "questions": [
+    "1. **What are the potential consequences of not having a comprehensive payment terms clause, and how can we mitigate these risks?**",
+    "2. **How can we modify the liability section to explicitly exclude certain types of damages, such as consequential damages, to provide greater clarity and protection for both parties?**",
+    "3. **Should we consider adding a termination \"for cause\" provision to the agreement, and if so, what are the key considerations and potential implications for including such a provision?**"
+  ]
 }
