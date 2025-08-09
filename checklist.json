@@ -1,0 +1,6 @@
+{
+  "Liability": "Liability should be limited to the contract value or a specified cap and clarify types of damages excluded (e.g., consequential).",
+  "Termination": "Should allow termination for convenience with notice or for cause; notice period specified (e.g., 30 days).",
+  "Payment Terms": "Must specify payment amounts, due dates, invoicing, and penalties/interest for late payment.",
+  "Confidentiality": "Should require parties to keep confidential information private and limit permitted disclosures."
+}
