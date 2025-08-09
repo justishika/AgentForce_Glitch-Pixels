@@ -59,7 +59,20 @@ def read_pdf(path: str) -> str:
 
 def load_checklist(path: str = "checklist.json") -> Dict[str, str]:
     with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        checklist = json.load(f)
+        if isinstance(checklist, list):
+            # Assign default clause names if possible
+            default_keys = [
+                "Liability",
+                "Termination",
+                "Payment Terms",
+                "Confidentiality"
+            ]
+            if len(checklist) == len(default_keys):
+                checklist = {k: v for k, v in zip(default_keys, checklist)}
+            else:
+                checklist = {str(i): item for i, item in enumerate(checklist)}
+        return checklist
 
 # === LLM call wrapper ===
 def call_groq_chat(prompt: str, system_prompt: Optional[str] = None) -> str:
@@ -83,15 +96,20 @@ def call_groq_chat(prompt: str, system_prompt: Optional[str] = None) -> str:
         "max_tokens": 1600
     }
 
-    resp = requests.post(API_URL, headers=headers, json=data, timeout=TIMEOUT)
-    resp.raise_for_status()
-    j = resp.json()
-    # Support common chat response shape
     try:
-        return j["choices"][0]["message"]["content"]
-    except Exception:
-        # fallback
-        return str(j)
+        resp = requests.post(API_URL, headers=headers, json=data, timeout=TIMEOUT)
+        resp.raise_for_status()
+        j = resp.json()
+        # Support common chat response shape
+        try:
+            return j["choices"][0]["message"]["content"]
+        except Exception:
+            return str(j)
+    except requests.exceptions.HTTPError as e:
+        if resp.status_code == 429:
+            return "[ERROR] Rate limit exceeded for Groq API. Please wait a few minutes before trying again."
+        else:
+            raise
 
 # === System / prompts ===
 SYSTEM_PROMPT = (

@@ -1,1 +1,71 @@
-{"profile":{"name":"R","email":"r@gmail.com","usn":"CS22114","role":"cr"},"issues":[{"_id":"682ff251a4b7f55aea9d8ac4","usn":"CS22114","title":"busy!!","description":"cant attend class!!","status":"open","date":"2025-05-23T03:58:09.744Z","__v":0},{"_id":"68353f5883bf5c183e72292e","usn":"CS22114","title":"neww","description":"neww","status":"open","date":"2025-05-27T04:28:08.368Z","__v":0}],"feedback":[]}
+{
+  "document_title": "Master Services Agreement",
+  "document_type": "Contract",
+  "parties": [
+    {
+      "party_name": "Innovate Solutions Inc.",
+      "role": "Service Provider",
+      "legal_status": "Corporation",
+      "jurisdiction": "Delaware"
+    },
+    {
+      "party_name": "Global Enterprise Ventures LLC",
+      "role": "Client",
+      "legal_status": "Limited Liability Company",
+      "jurisdiction": "New York"
+    }
+  ],
+  "key_compliance_areas": [
+    {
+      "area": "Contract Formation",
+      "requirements": [
+        "Mutual assent (offer and acceptance)",
+        "Consideration (exchange of value)",
+        "Legal capacity of parties",
+        "Legality of purpose"
+      ]
+    },
+    {
+      "area": "Data Protection & Confidentiality",
+      "requirements": [
+        "Non-disclosure of confidential information",
+        "Survival of confidentiality obligations post-termination (5 years)",
+        "Exclusions for publicly known or legally required disclosures"
+      ]
+    },
+    {
+      "area": "Intellectual Property Rights",
+      "requirements": [
+        "Clarity on ownership of deliverables (Client owns upon payment)",
+        "License granted for pre-existing materials (non-exclusive, perpetual)",
+        "Protection against third-party infringement claims (indemnification)"
+      ]
+    },
+    {
+      "area": "Liability & Risk Management",
+      "requirements": [
+        "Limitation of liability clause (cap on damages)",
+        "Exclusion of indirect and consequential damages",
+        "Mutual indemnification for third-party claims"
+      ]
+    },
+    {
+      "area": "Dispute Resolution",
+      "requirements": [
+        "Designation of governing law (State of Delaware)",
+        "Mandatory arbitration clause",
+        "Specification of arbitration location (Wilmington, Delaware)"
+      ]
+    },
+    {
+      "area": "General Contractual Provisions",
+      "requirements": [
+        "Clarity on term and termination conditions",
+        "Defined payment terms and late payment penalties",
+        "Force majeure clause for unforeseen events",
+        "Non-assignment clause without consent",
+        "Supersedes previous agreements (entire agreement clause)"
+      ]
+    }
+  ]
+}

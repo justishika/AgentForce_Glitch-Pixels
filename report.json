@@ -1,0 +1,50 @@
+{
+  "summary": "Here is a summary of the key purpose and business terms of the contract in 3-5 bullet points:\n\n• The contract is between Alpha Co and Beta LLC.\n• Payment terms: payment is due within 30 days of invoice.\n• Termination: either party may terminate the agreement with 60 days' written notice.\n• Liability: liability is limited to $10,000.\n• Confidentiality: parties agree to keep shared information confidential, except as required by law.",
+  "clauses": {
+    "Liability": "Liability shall not exceed $10,000.",
+    "Termination": "Either party may terminate this Agreement with 60 days' written notice.",
+    "PaymentTerms": "Payment shall be made within 30 days of invoice.",
+    "Confidentiality": "The parties agree to keep shared information confidential except as required by law."
+  },
+  "validation": {
+    "Liability": {
+      "status": "RISKY",
+      "reason": "Liability limit is too low and does not specify types of damages excluded",
+      "suggested_fix": "Specify a liability limit equal to the contract value or a reasonable cap, and clarify types of damages excluded",
+      "severity": "medium"
+    },
+    "Termination": {
+      "status": "MISSING",
+      "reason": "Does not allow termination for convenience with notice or for cause",
+      "suggested_fix": "Add clauses allowing termination for convenience with notice or for cause",
+      "severity": "high"
+    },
+    "PaymentTerms": {
+      "status": "MISSING",
+      "reason": "Does not specify payment amounts, due dates, invoicing, and penalties/interest for late payment",
+      "suggested_fix": "Specify payment amounts, due dates, invoicing, and penalties/interest for late payment",
+      "severity": "high"
+    },
+    "Confidentiality": {
+      "status": "RISKY",
+      "reason": "Does not require parties to keep confidential information private and limit permitted disclosures",
+      "suggested_fix": "Require parties to keep confidential information private and limit permitted disclosures",
+      "severity": "medium"
+    }
+  },
+  "followups": {
+    "follow_up_questions": [
+      "Can you specify the types of damages excluded from the liability limit?",
+      "Is there a specific reason for not allowing termination for convenience or for cause?",
+      "Can you provide more details on the payment amounts, due dates, and invoicing process?",
+      "Are there any specific laws or regulations that require disclosure of confidential information?",
+      "Is there a cap on the liability limit, and if so, what is it?"
+    ],
+    "suggested_rewrites": [
+      "Liability shall not exceed [reasonable cap] and shall not include [types of damages excluded].",
+      "Either party may terminate this Agreement with [reasonable notice period] written notice, or for cause upon [specific circumstances].",
+      "Payment shall be made within [reasonable timeframe] of invoice, with [penalties/interest] for late payment."
+    ]
+  },
+  "timestamp": 1754741205.4352422
+}
