@@ -1,0 +1,29 @@
+// Legal Document AI Agent Architecture
+digraph {
+	A [label="Streamlit UI
+(Upload, Chat, Display, Download)"]
+	B [label="Agent Pipeline
+(LangChain Tools)"]
+	C [label="Groq LLM
+(llama-3.3-70b)"]
+	D [label="FileReaderTool
+(PDF/TXT extract)"]
+	E [label="SummarizeTool
+(Structured summary)"]
+	F [label="ClauseMatchTool
+(Checklist match)"]
+	G [label="JSONReportTool
+(Report output)"]
+	H [label="Chatbot Interface
+(LLM-powered Q&A)"]
+	A -> B
+	B -> C
+	B -> D
+	B -> E
+	B -> F
+	D -> E
+	E -> F
+	F -> G
+	A -> H
+	H -> C
+}

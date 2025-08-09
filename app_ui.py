@@ -1,49 +1,62 @@
 import streamlit as st
 import json
-from app import agent_reasoning  # Import the main agent function
-from fpdf import FPDF
+from app import agent_reasoning
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import SystemMessage, HumanMessage
 
-st.set_page_config(page_title="Legal Document Summarizer & Validator", layout="wide")
+st.set_page_config(page_title="Legal Document Chatbot & Summarizer", layout="wide")
+st.title("📜 Legal Document Chatbot & Summarizer")
+st.write("Upload a legal document and checklist, then chat with the AI agent about your contract.")
 
-st.title("📜 Legal Document Summarizer & Validator")
-st.write("Upload a legal document, and the AI agent will summarize it, validate clauses, and flag risks.")
+GROQ_API_KEY = None
+MODEL_NAME = "llama-3.3-70b-versatile"
+try:
+    import os
+    GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+except Exception:
+    pass
+llm = ChatOpenAI(
+    openai_api_key=GROQ_API_KEY,
+    openai_api_base="https://api.groq.com/openai/v1",
+    model_name=MODEL_NAME,
+    temperature=0.2,
+    max_tokens=2048,
+)
 
 uploaded_file = st.file_uploader("Upload Contract (required)", type=["txt", "pdf"], accept_multiple_files=False)
 checklist_file = st.file_uploader("Upload Compliance Checklist (JSON, required)", type=["json"], accept_multiple_files=False)
 
+if "doc_path" not in st.session_state:
+    st.session_state.doc_path = None
+if "checklist_path" not in st.session_state:
+    st.session_state.checklist_path = None
+if "report" not in st.session_state:
+    st.session_state.report = None
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 if uploaded_file and checklist_file:
-    with st.spinner("Processing... ⏳"):
-        # Save uploaded files temporarily
-        contract_path = "temp_contract.pdf" if uploaded_file.name.lower().endswith('.pdf') else "temp_contract.txt"
-        with open(contract_path, "wb") as f:
-            f.write(uploaded_file.read())
-        with open("temp_checklist.json", "wb") as f:
-            f.write(checklist_file.read())
-    # Use agent_reasoning, but don't write to disk
-    result = agent_reasoning(contract_path, "temp_checklist.json", out_path=None)
+    contract_path = "temp_contract.pdf" if uploaded_file.name.lower().endswith('.pdf') else "temp_contract.txt"
+    with open(contract_path, "wb") as f:
+        f.write(uploaded_file.read())
+    with open("temp_checklist.json", "wb") as f:
+        f.write(checklist_file.read())
+    st.session_state.doc_path = contract_path
+    st.session_state.checklist_path = "temp_checklist.json"
+    with st.spinner("Processing document and checklist..."):
+        st.session_state.report = agent_reasoning(contract_path, "temp_checklist.json", out_path=None)
+    st.success("✅ Document processed! You can now chat with the agent below.")
 
-    st.success("✅ Processing complete!")
-    st.sidebar.header("Instructions")
-    st.sidebar.markdown("""
-    1. Upload a legal document (PDF or TXT).
-    2. Upload a compliance checklist (JSON).
-    3. View summary and download the legal report as PDF.
-    """)
-
-
-    # Display summary in a structured format
+if st.session_state.report:
     st.subheader("📄 Structured Summary")
-    summary = result.get("summary", "No summary generated.")
-    if isinstance(summary, str) and "•" in summary:
-        bullets = [line.strip() for line in summary.split("•") if line.strip()]
-        for i, bullet in enumerate(bullets, 1):
+    summary = st.session_state.report.get("summary", "No summary generated.")
+    if isinstance(summary, list):
+        for i, bullet in enumerate(summary, 1):
             st.markdown(f"**{i}.** {bullet}")
     else:
         st.markdown(summary)
-
-    # Display validation results
     st.subheader("✅ Validation Results")
-    validation = result.get("validation", {})
+    validation = st.session_state.report.get("validation", {})
     if validation:
         for key, val in validation.items():
             display_key = key if not str(key).isdigit() else f"Clause {key}"
@@ -74,50 +87,21 @@ if uploaded_file and checklist_file:
     else:
         st.info("No validation results found.")
 
-    # PDF download button with summary and validation
-    def create_pdf(summary_text, validation_dict):
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        pdf.cell(200, 10, txt="Legal Document Summary", ln=True, align="C")
-        pdf.ln(10)
-        if isinstance(summary_text, list):
-            summary_text = "\n".join(str(item) for item in summary_text)
-        # If summary_text is a list, join it into a string
-        if isinstance(summary_text, list):
-            summary_text = "\n".join(str(item) for item in summary_text)
-        if isinstance(summary_text, str):
-            summary_text = summary_text.replace("•", "-")
-        if isinstance(summary_text, str) and "-" in summary_text:
-            bullets = [line.strip() for line in summary_text.split("-") if line.strip()]
-            for i, bullet in enumerate(bullets, 1):
-                pdf.multi_cell(0, 10, txt=f"{i}. {bullet}")
-        else:
-            pdf.multi_cell(0, 10, txt=summary_text)
-        pdf.ln(8)
-        pdf.set_font("Arial", size=12, style='B')
-        pdf.cell(0, 10, txt="Validation Results", ln=True)
-        pdf.set_font("Arial", size=12)
-        if validation_dict:
-            for key, val in validation_dict.items():
-                display_key = key if not str(key).isdigit() else f"Clause {key}"
-                if isinstance(val, dict):
-                    status = val.get("status", "")
-                    reason = val.get("reason", "")
-                    suggested_fix = val.get("suggested_fix", "")
-                    severity = val.get("severity", "")
-                    pdf.multi_cell(0, 10, txt=f"{display_key}: {status}\nReason: {reason}\nSuggested fix: {suggested_fix}\nSeverity: {severity}\n")
-                elif isinstance(val, list):
-                    for item in val:
-                        pdf.multi_cell(0, 10, txt=f"{display_key}: {item}\n")
-                else:
-                    pdf.multi_cell(0, 10, txt=f"{display_key}: {val}\n")
-        else:
-            pdf.multi_cell(0, 10, txt="No validation results found.")
-        return pdf.output(dest="S").encode("utf-8")
-
-    pdf_bytes = create_pdf(summary, validation)
-    st.download_button("⬇ Download Legal Report as PDF", data=pdf_bytes, file_name="legal_report.pdf", mime="application/pdf")
-
+    st.subheader("💬 Chat with the Legal Agent")
+    for msg in st.session_state.chat_history:
+        st.chat_message(msg["role"]).write(msg["content"])
+    user_input = st.chat_input("Ask a legal question about your contract or checklist...")
+    if user_input:
+        st.session_state.chat_history.append({"role": "user", "content": user_input})
+        # Compose context from uploaded document and checklist
+        context = f"Contract: {open(st.session_state.doc_path, 'r', encoding='utf-8', errors='ignore').read()}\n\nChecklist: {open(st.session_state.checklist_path, 'r', encoding='utf-8', errors='ignore').read()}"
+        prompt = f"You are a legal AI assistant. Here is the contract and checklist context.\n{context}\n\nUser question: {user_input}"
+        messages = [
+            SystemMessage(content="You are a legal AI assistant."),
+            HumanMessage(content=prompt)
+        ]
+        response = llm.invoke(messages).content
+        st.session_state.chat_history.append({"role": "assistant", "content": response})
+        st.chat_message("assistant").write(response)
 else:
     st.info("Please upload both the contract and checklist to begin.")
