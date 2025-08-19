@@ -4,7 +4,15 @@ import argparse
 import google.generativeai as genai
 import time
 from typing import Any
+from dotenv import load_dotenv
 
+
+load_dotenv()
+
+# Get the API key from environment
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("Missing GEMINI_API_KEY. Please set it in .env or env vars")
 
 genai.configure(api_key=GEMINI_API_KEY)
 
