@@ -5,7 +5,7 @@ import google.generativeai as genai
 import time
 from typing import Any
 
-GEMINI_API_KEY = "AIzaSyBApGlUPOvt4SQLZ5UUp2Mp6H_lzPEE8t0"
+
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Prefer the requested model name first, but fall back to stable public models
